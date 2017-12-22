@@ -333,7 +333,11 @@
     {#####################}
     {### END POST BODY ###}
     {#####################}
-
+    <div>
+      {% if not is_index %}
+        {% include 'my-copyright.swig' %}
+      {% endif %}
+    </div>
     {% if theme.wechat_subscriber.enabled and not is_index %}
       <div>
         {% include 'wechat-subscriber.swig' %}
@@ -346,6 +350,14 @@
       </div>
     {% endif %}
 
+
+    {% if not is_index %}
+    <div>
+	  {% include 'google_ad.swig' %}
+
+    </div>
+    {% endif %}
+
     {% if theme.post_copyright.enable and not is_index %}
       <div>
         {% include 'post-copyright.swig' with { post: post } %}
@@ -356,7 +368,7 @@
       {% if post.tags and post.tags.length and not is_index %}
         <div class="post-tags">
           {% for tag in post.tags %}
-            <a href="{{ url_for(tag.path) }}" rel="tag"># {{ tag.name }}</a>
+            <a href="{{ url_for(tag.path) }}" rel="tag"><i class="fa fa-tag"></i>{{ tag.name }}</a>
           {% endfor %}
         </div>
       {% endif %}
@@ -370,7 +382,19 @@
           </div>
         {% endif %}
 
-        {% if (theme.vkontakte_api.enable and theme.vkontakte_api.like) or (theme.facebook_sdk.enable and theme.facebook_sdk.like_button) %}
+        {# https://www.addtoany.com/ addtoany js code#}
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+          <a class="a2a_button_facebook"></a>
+          <a class="a2a_button_twitter a2a_counter"></a>
+          <a class="a2a_button_wechat a2a_counter"></a>
+          <a class="a2a_button_sina_weibo a2a_counter"></a>
+          <a class="a2a_button_douban a2a_counter"></a>
+        </div>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        {# {% if (theme.vkontakte_api.enable and theme.vkontakte_api.like) or (theme.facebook_sdk.enable and theme.facebook_sdk.like_button) %}
           <div class="social-like">
             {% if theme.vkontakte_api.enable and theme.vkontakte_api.like %}
               <div class="vk_like">
@@ -384,9 +408,9 @@
               </div>
             {% endif %}
           </div>
-        {% endif %}
+        {% endif %} #}
 
-        {% if theme.needmoreshare2.enable and theme.needmoreshare2.postbottom.enable %}
+        {# {% if theme.needmoreshare2.enable and theme.needmoreshare2.postbottom.enable %}
           {% if (theme.vkontakte_api.enable and theme.vkontakte_api.like) or (theme.facebook_sdk.enable and theme.facebook_sdk.like_button) %}
             <span class="post-meta-divider">|</span>
           {% endif %}
@@ -395,7 +419,7 @@
               <i class="fa fa-share-alt" aria-hidden="true"></i>
             </span>
           </div>
-        {% endif %}
+        {% endif %} #}
         </div>
       {% endif %}
       {% endif %}
@@ -421,7 +445,19 @@
           </div>
         </div>
       {% endif %}
+      {##################}
+      {### related_post ###}
+      {##################}
 
+      {% set related_post =  list_related_posts(post, {maxCount: 10, orderBy: 'date'}) %}
+        {% if (related_post.length > 0) and not is_index %}
+          <h3 class="article-title" style="font-size: 20px;">相关文章</h3>
+          <ul class="related-posts">
+          {% for rl_post in related_post %}
+              <li class="related-posts-item"><a href="{{ url_for(rl_post.path) }}">{{ rl_post.title }}</a></li>
+          {% endfor %}
+          </ul>
+        {% endif %}
       {% set isLast = loop.index % page.per_page === 0 %}
       {% if is_index and not isLast %}
         <div class="post-eof"></div>

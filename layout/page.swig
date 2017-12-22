@@ -46,6 +46,20 @@
               {{ list_categories() }}
             </div>
           </div>
+        {% elif page.type === 'about' %}
+
+          {{page.content}}
+          <style type="text/css">
+          #SNS_buttons { display: flex; justify-content: center; }
+          .a2a_svg, .a2a_count { border-radius: 0 !important; }
+          </style>
+          <div>follow me </div>
+          <div class="a2a_kit a2a_kit_size_32 a2a_default_style a2a_follow" id="SNS_buttons">
+            <a class="a2a_button_twitter" data-a2a-follow="chali_chan"></a>
+            <a class="a2a_button_github" data-a2a-follow="caili-zhang"></a>
+            <a class="a2a_button_sina_weibo" href="http://weibo.com/weibo"></a>
+          </div>
+          <script async src="https://static.addtoany.com/menu/page.js"></script>
         {% else %}
           {{ page.content }}
         {% endif %}
